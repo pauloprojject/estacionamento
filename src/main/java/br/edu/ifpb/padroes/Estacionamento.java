@@ -20,19 +20,8 @@ public class Estacionamento {
 
     public BigDecimal obterTotalAPagar() {
         assert(entrada != null && saida != null && veiculo != null);
-        long periodoHoras = Duration.between(entrada, saida).toHours();
-        long periodoDias = Duration.between(entrada, saida).toDays();
+        Duration periodo = Duration.between(entrada, saida);
 
-        BigDecimal valor = new BigDecimal(0);
-        if (periodoHoras < 12) {
-            valor = VALOR_HORA.multiply(new BigDecimal(periodoHoras));
-        } else if (periodoHoras > 12 && periodoDias < 15) {
-            valor = VALOR_DIARIA.multiply(new BigDecimal(periodoDias));
-        } else if (periodoDias > 15) {
-            valor = VALOR_MENSALIDADE;
-        }
-
-        return valor;
+        return EstacionamentoPorPeriodo.Calcular(periodo, VALOR_HORA, VALOR_DIARIA, VALOR_MENSALIDADE);
     }
-
 }
